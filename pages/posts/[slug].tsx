@@ -5,6 +5,7 @@ import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import { format } from 'date-fns';
 import { ArrowLeftIcon } from '@heroicons/react/outline';
+import { HeartIcon } from '@heroicons/react/solid';
 import { useState, useEffect } from 'react';
 
 export const getStaticPaths = async () => {
@@ -44,6 +45,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 const Post: NextPage<Post> = props => {
   const [views, setViews] = useState(props?.views ?? 0);
+  const [likes, setLikes] = useState(props?.likes ?? 0);
 
   useEffect(() => {
     if (props?.id) {
@@ -53,6 +55,15 @@ const Post: NextPage<Post> = props => {
       setViews(prev => prev + 1);
     }
   }, [props?.id]);
+
+  const likePost = () => {
+    if (props?.id) {
+      fetch(`/api/posts/${props.id}/likes`, {
+        method: 'PUT',
+      });
+      setLikes(prev => prev + 1);
+    }
+  };
 
   return (
     <div>
@@ -83,6 +94,17 @@ const Post: NextPage<Post> = props => {
             {views ?? 0} view{views > 1 ? 's' : null}
           </span>
         </p>
+
+        <button
+          type="button"
+          onClick={likePost}
+          className="mt-1 inline-flex items-center space-x-1 font-medium group"
+        >
+          <HeartIcon className="w-5 h-5 text-red-500 shrink-0 group-hover:scale-125 transition" />
+          <span className="text-gray-500 hover:text-current transition">
+            {likes}
+          </span>
+        </button>
 
         <p className="mt-4 text-lg text-gray-700">{props?.content ?? ''}</p>
       </main>

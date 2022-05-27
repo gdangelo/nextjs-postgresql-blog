@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import { format } from 'date-fns';
+import { HeartIcon } from '@heroicons/react/solid';
 
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await prisma.post.findMany({
@@ -40,17 +41,22 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
             <li key={post.id}>
               <Link href={`/posts/${post.slug}`}>
                 <a className="group block">
-                  <p className="text-gray-500 text-sm">
+                  <div className="flex items-center space-x-1 text-gray-500 text-sm">
                     <span>
                       {post?.createdAt
                         ? format(new Date(post.createdAt), 'MMMM d, yyyy')
                         : null}
                     </span>
-                    {' - '}
+                    <span>-</span>
                     <span>
                       {post?.views ?? 0} view{post?.views > 1 ? 's' : null}
                     </span>
-                  </p>
+                    <span>-</span>
+                    <div className="inline-flex items-center space-x-1">
+                      <HeartIcon className="w-4 h-4 text-red-500 shrink-0" />
+                      <span>{post?.likes}</span>
+                    </div>
+                  </div>
                   <h3 className="text-blue-600 text-xl group-hover:underline underline-offset-1 truncate">
                     {post?.title ?? 'Untitled'}
                   </h3>
