@@ -2,6 +2,7 @@ import type { NextPage, GetStaticProps } from 'next';
 import type { Post } from '@prisma/client';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import prisma from '@/lib/prisma';
 import { format } from 'date-fns';
 import { ArrowLeftIcon } from '@heroicons/react/outline';
@@ -43,26 +44,38 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 const Post: NextPage<Post> = props => {
-  const [views, setViews] = useState(props?.views ?? 0);
-  const [likes, setLikes] = useState(props?.likes ?? 0);
+  const router = useRouter();
+
+  const [views, setViews] = useState(0);
+  const [likes, setLikes] = useState(0);
 
   useEffect(() => {
-    if (props?.id) {
-      fetch(`/api/posts/${props.id}/views`, {
+    (async () => {
+      // Update views count
+      const res = await fetch(`/api/posts/${props.id}/views`, {
         method: 'PUT',
       });
-      setViews(prev => prev + 1);
-    }
-  }, [props?.id]);
+      const post = await res.json();
+      // Set state
+      setViews(post?.views ?? 0);
+      setLikes(post?.likes ?? 0);
+    })();
+  }, [props.id]);
 
   const likePost = () => {
-    if (props?.id) {
-      fetch(`/api/posts/${props.id}/likes`, {
-        method: 'PUT',
-      });
-      setLikes(prev => prev + 1);
-    }
+    fetch(`/api/posts/${props.id}/likes`, {
+      method: 'PUT',
+    });
+    setLikes(prev => prev + 1);
   };
+
+  if (router.isFallback) {
+    return (
+      <div className="px-4 sm:px-6 h-screen w-screen flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -89,7 +102,7 @@ const Post: NextPage<Post> = props => {
           </span>
           {' - '}
           <span>
-            {Intl.NumberFormat().format(views ?? 0)} view
+            {Intl.NumberFormat().format(views)} view
             {views > 1 ? 's' : null}
           </span>
         </p>
