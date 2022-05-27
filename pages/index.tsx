@@ -38,7 +38,7 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
         <ul className="mt-6 space-y-6">
           {posts.map(post => (
             <li key={post.id}>
-              <Link href="#">
+              <Link href={`/posts/${post.slug}`}>
                 <a className="group block">
                   <p className="text-gray-500 text-sm">
                     {post?.createdAt
@@ -48,7 +48,7 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
                   <h3 className="text-blue-500 text-xl group-hover:underline underline-offset-1 truncate">
                     {post?.title ?? 'Untitled'}
                   </h3>
-                  <p className="text-lg text-gray-800">{post?.excerpt ?? ''}</p>
+                  <p className="text-lg text-gray-700">{post?.excerpt ?? ''}</p>
                 </a>
               </Link>
             </li>
