@@ -20,13 +20,12 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const post = params?.slug
-    ? await prisma.post.findUnique({
-        where: {
-          slug: params.slug,
-        },
-      })
-    : null;
+  const slug = String(params?.slug);
+  const post = await prisma.post.findUnique({
+    where: {
+      slug,
+    },
+  });
 
   if (post) {
     return {
