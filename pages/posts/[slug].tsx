@@ -69,10 +69,9 @@ const Post: NextPage<Post> = props => {
       <Head>
         <title>{props.title}</title>
         <meta name="description" content={props.excerpt} />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="px-4 sm:px-6 py-12 max-w-screen-md mx-auto">
+      <main className="px-4 sm:px-6 py-16 max-w-screen-md mx-auto">
         <Link href="/">
           <a className="inline-flex space-x-1 items-center text-blue-600 hover:underline">
             <ArrowLeftIcon className="mt-px w-4 h-4 shrink-0" />
