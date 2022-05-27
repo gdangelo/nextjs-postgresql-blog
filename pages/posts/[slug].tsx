@@ -5,6 +5,7 @@ import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import { format } from 'date-fns';
 import { ArrowLeftIcon } from '@heroicons/react/outline';
+import { useState, useEffect } from 'react';
 
 export const getStaticPaths = async () => {
   const posts = await prisma.post.findMany();
@@ -42,6 +43,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 const Post: NextPage<Post> = props => {
+  const [views, setViews] = useState(props?.views ?? 0);
+
+  useEffect(() => {
+    if (props?.id) {
+      fetch(`/api/posts/${props.id}/views`, {
+        method: 'PUT',
+      });
+      setViews(prev => prev + 1);
+    }
+  }, [props?.id]);
+
   return (
     <div>
       <Head>
@@ -61,9 +73,15 @@ const Post: NextPage<Post> = props => {
         <h1 className="mt-2 text-3xl font-bold">{props.title}</h1>
 
         <p className="mt-4 text-gray-500 font-medium">
-          {props?.createdAt
-            ? format(new Date(props.createdAt), 'MMMM d, yyyy')
-            : null}
+          <span>
+            {props?.createdAt
+              ? format(new Date(props.createdAt), 'MMMM d, yyyy')
+              : null}
+          </span>
+          {' - '}
+          <span>
+            {views ?? 0} view{views > 1 ? 's' : null}
+          </span>
         </p>
 
         <p className="mt-4 text-lg text-gray-700">{props?.content ?? ''}</p>

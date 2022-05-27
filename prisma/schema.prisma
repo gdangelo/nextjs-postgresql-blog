@@ -16,6 +16,7 @@ model Post {
   slug      String   @unique
   excerpt   String   @db.VarChar(500)
   content   String
+  views     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

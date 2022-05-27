@@ -41,9 +41,15 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
               <Link href={`/posts/${post.slug}`}>
                 <a className="group block">
                   <p className="text-gray-500 text-sm">
-                    {post?.createdAt
-                      ? format(new Date(post.createdAt), 'MMMM d, yyyy')
-                      : null}
+                    <span>
+                      {post?.createdAt
+                        ? format(new Date(post.createdAt), 'MMMM d, yyyy')
+                        : null}
+                    </span>
+                    {' - '}
+                    <span>
+                      {post?.views ?? 0} view{post?.views > 1 ? 's' : null}
+                    </span>
                   </p>
                   <h3 className="text-blue-600 text-xl group-hover:underline underline-offset-1 truncate">
                     {post?.title ?? 'Untitled'}
