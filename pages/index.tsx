@@ -1,4 +1,4 @@
-import type { NextPage, GetStaticProps } from 'next';
+import type { NextPage } from 'next';
 import type { Post } from '@prisma/client';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -6,17 +6,17 @@ import prisma from '@/lib/prisma';
 import { format } from 'date-fns';
 import { HeartIcon } from '@heroicons/react/solid';
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps = async () => {
   const posts = await prisma.post.findMany({
     orderBy: {
       createdAt: 'desc',
     },
+    take: 10,
   });
   return {
     props: {
       posts: JSON.parse(JSON.stringify(posts)),
     },
-    revalidate: 1,
   };
 };
 
