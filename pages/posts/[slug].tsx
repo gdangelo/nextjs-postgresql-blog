@@ -53,7 +53,9 @@ const Post: NextPage<Post> = props => {
   useEffect(() => {
     (async () => {
       // Update views count
-      const post: Post = await axios.put(`/api/posts/${props.id}/views`);
+      const { data: post } = await axios.put<Post>(
+        `/api/posts/${props.id}/views`
+      );
       // Set state
       setViews(post?.views ?? 0);
       setLikes(post?.likes ?? 0);
