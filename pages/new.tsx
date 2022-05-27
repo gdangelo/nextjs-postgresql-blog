@@ -1,9 +1,11 @@
 import type { NextPage } from 'next';
+import type { Post } from '@prisma/client';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-hot-toast';
+import axios from 'axios';
 
 const NewPostSchema = Yup.object({
   title: Yup.string()
@@ -35,14 +37,7 @@ const NewPost: NextPage = () => {
 
   const createPost = async (values: Values) => {
     try {
-      const res = await fetch(`/api/posts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      });
-      const post = await res.json();
+      const { data: post } = await axios.post<Post>(`/api/posts`, values);
       toast.success('Post successfully created');
       await router.push(`/posts/${post.slug}`);
     } catch (err) {

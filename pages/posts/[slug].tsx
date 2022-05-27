@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { HeartIcon } from '@heroicons/react/solid';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export const getStaticPaths = async () => {
   const posts = await prisma.post.findMany();
@@ -52,10 +53,7 @@ const Post: NextPage<Post> = props => {
   useEffect(() => {
     (async () => {
       // Update views count
-      const res = await fetch(`/api/posts/${props.id}/views`, {
-        method: 'PUT',
-      });
-      const post = await res.json();
+      const post: Post = await axios.put(`/api/posts/${props.id}/views`);
       // Set state
       setViews(post?.views ?? 0);
       setLikes(post?.likes ?? 0);
@@ -63,9 +61,7 @@ const Post: NextPage<Post> = props => {
   }, [props.id]);
 
   const likePost = () => {
-    fetch(`/api/posts/${props.id}/likes`, {
-      method: 'PUT',
-    });
+    axios.put(`/api/posts/${props.id}/likes`);
     setLikes(prev => prev + 1);
   };
 

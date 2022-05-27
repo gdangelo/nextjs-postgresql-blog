@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
 import slugify from 'slugify';
+import { nanoid } from 'nanoid';
 
 export default async function handler(
   req: NextApiRequest,
@@ -27,12 +28,13 @@ export default async function handler(
     case 'POST':
       try {
         const { title, excerpt, content } = req.body;
+        const suffix = nanoid(10);
         const post = await prisma.post.create({
           data: {
             title,
             excerpt,
             content,
-            slug: slugify(title, {
+            slug: slugify(`${title}-${suffix}`, {
               lower: true,
               strict: true,
               trim: true,
