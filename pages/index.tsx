@@ -45,7 +45,7 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
                       ? format(new Date(post.createdAt), 'MMMM d, yyyy')
                       : null}
                   </p>
-                  <h3 className="text-blue-500 text-xl group-hover:underline underline-offset-1 truncate">
+                  <h3 className="text-blue-600 text-xl group-hover:underline underline-offset-1 truncate">
                     {post?.title ?? 'Untitled'}
                   </h3>
                   <p className="text-lg text-gray-700">{post?.excerpt ?? ''}</p>
