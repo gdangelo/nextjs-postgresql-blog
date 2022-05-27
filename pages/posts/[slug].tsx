@@ -91,7 +91,8 @@ const Post: NextPage<Post> = props => {
           </span>
           {' - '}
           <span>
-            {views ?? 0} view{views > 1 ? 's' : null}
+            {Intl.NumberFormat().format(views ?? 0)} view
+            {views > 1 ? 's' : null}
           </span>
         </p>
 
@@ -102,7 +103,7 @@ const Post: NextPage<Post> = props => {
         >
           <HeartIcon className="w-5 h-5 text-red-500 shrink-0 group-hover:scale-125 transition" />
           <span className="text-gray-500 hover:text-current transition">
-            {likes}
+            {Intl.NumberFormat().format(likes)}
           </span>
         </button>
 

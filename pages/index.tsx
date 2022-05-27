@@ -41,7 +41,7 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
             <li key={post.id}>
               <Link href={`/posts/${post.slug}`}>
                 <a className="group block">
-                  <div className="flex items-center space-x-1 text-gray-500 text-sm">
+                  <div className="flex items-center space-x-1 text-gray-500 text-sm font-medium">
                     <span>
                       {post?.createdAt
                         ? format(new Date(post.createdAt), 'MMMM d, yyyy')
@@ -49,12 +49,13 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
                     </span>
                     <span>-</span>
                     <span>
-                      {post?.views ?? 0} view{post?.views > 1 ? 's' : null}
+                      {Intl.NumberFormat().format(post?.views ?? 0)} view
+                      {post?.views > 1 ? 's' : null}
                     </span>
                     <span>-</span>
                     <div className="inline-flex items-center space-x-1">
                       <HeartIcon className="w-4 h-4 text-red-500 shrink-0" />
-                      <span>{post?.likes}</span>
+                      <span>{Intl.NumberFormat().format(post?.likes)}</span>
                     </div>
                   </div>
                   <h3 className="text-blue-600 text-xl group-hover:underline underline-offset-1 truncate">
