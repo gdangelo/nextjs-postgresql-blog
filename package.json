@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "npm run migrate:deploy && next build",
+    "vercel-build": "prisma generate && npm run migrate:deploy && next build",
     "migrate:deploy": "DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma migrate deploy"
   },
   "prisma": {
