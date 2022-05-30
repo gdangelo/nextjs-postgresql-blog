@@ -9,8 +9,8 @@ const ViewPostTrend = new Trend('View post', true);
 const LikePostTrend = new Trend('Like post', true);
 
 export const options = {
-  vus: 1000,
-  duration: '10s',
+  vus: 30,
+  duration: '15s',
 };
 
 const SLEEP_DURATION = 0.5;
